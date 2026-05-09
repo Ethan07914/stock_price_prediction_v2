@@ -17,7 +17,6 @@ class transform:
         self.news_df = self.transform_news_data()
 
     def transform_stock_data(self):
-
         df = pd.read_csv(self.stock_data_file_path)
 
         # START CHANGE - claude-sonnet-4-6
@@ -37,8 +36,7 @@ class transform:
         df[f'previous_day_open'] = df['open'].shift(1)
         df[f'previous_day_volume'] = df['volume'].shift(1)
 
-
-        days = (5,10,30)
+        days = (1,3,5)
         # Min and Max prices within time period
         for day in days:
             df[f'{day}_day_max'] = df.apply(lambda x: df.loc[(df['date'] > x['date'] - dt.timedelta(days=day)) *
