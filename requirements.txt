@@ -8,6 +8,8 @@ tiingo
 transformers
 scikit-learn
 torch
+tabpfn
+tabpfn_client
 
 dotenv
 ipynb

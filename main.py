@@ -83,7 +83,11 @@ def run_load():
     # LOAD:
     # Initialise load object
     load_obj = load('data/news_df_with_metrics.csv', 'data/transformed_stock_data.csv')
-    load_obj.combined_df.to_csv('data/combined_output.csv', index=False)
+    load_obj.combined_df.to_csv('data/combined_output.csv', index=False, mode='a')
+
+    df = pd.read_csv('data/combined_output.csv')
+    deduplicated_df = df.drop_duplicates(keep='first')
+    deduplicated_df.to_csv('data/combined_output.csv', index=False)
 
     print('''
     END''')
