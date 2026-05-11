@@ -37,17 +37,6 @@ class transform:
             df[f'previous_day_open'] = df['open'].shift(1)
             df[f'previous_day_volume'] = df['volume'].shift(1)
 
-            days = (1,3,5)
-            # Min and Max prices within time period
-            for day in days:
-                df[f'{day}_day_max'] = df.apply(lambda x: df.loc[(df['date'] > x['date'] - dt.timedelta(days=day)) *
-                                                                 (df['date'] <= x['date'])]
-                ['high'].max(), axis=1)
-                df[f'{day}_day_min'] = df.apply(lambda x: df.loc[(df['date'] > x['date'] - dt.timedelta(days=day)) *
-                                                                 (df['date'] <= x['date'])]
-                ['low'].min(), axis=1)
-
-            # Drops rows with NULL values in lagged columns to prevent performance reductions
             df = df.dropna()
 
             df['day_of_week'] = df['date'].dt.day_name().map(weekday_dict)
