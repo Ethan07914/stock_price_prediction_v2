@@ -3,7 +3,7 @@ import pandas as pd
 import time
 
 # DATAFRAMES
-stock_df = pd.read_csv('data/transformed_stock_data.csv')[['date',
+stock_df = pd.read_csv('data/combined_output.csv')[['date',
                                                            'close',
                                                            'high',
                                                            'low',
@@ -66,14 +66,16 @@ if st.button("Retrain"):
     st.balloons()
     pass
 
-left, centre, right =st.columns(3)
 
-with centre:
-    st.subheader("Close Price by Date")
+
+
+st.subheader("Close Price by Date")
 
 st.line_chart(x='Date', y='Close Price',data=stock_df, color='#0668E1')
 
-st.dataframe(news_df)
+st.subheader("News Article Sentiment")
+st.dataframe(news_df.style.background_gradient('Blues'))
+st.subheader("Sentiment Percentages by Month")
 st.bar_chart(news_df, color=['Green', 'Red', 'Orange'])
 
 st.header("META Data Pipeline")
