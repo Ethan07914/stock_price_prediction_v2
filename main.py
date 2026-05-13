@@ -84,7 +84,7 @@ def run_load():
     # LOAD:
     # Initialise load object
     load_obj = load('data/news_df_with_metrics.csv', 'data/transformed_stock_data.csv')
-    load_obj.combined_df.to_csv('data/combined_output.csv', index=False, mode='a')
+    load_obj.combined_df.to_csv('data/combined_output.csv', index=False, mode='a', header=None)
 
     df = pd.read_csv('data/combined_output.csv')
     deduplicated_df = df.drop_duplicates(keep='first', subset=['date'])
@@ -96,7 +96,7 @@ def run_load():
     return load_obj.combined_df
 
 def overwrite_files():
-    files = ['combined_output.csv', 'news_df_with_metrics.csv', 'transformed_news_data.csv',
+    files = ['news_df_with_metrics.csv', 'transformed_news_data.csv',
              'extracted_news_data.csv', 'extracted_stock_data.csv', 'transformed_stock_data.csv']
     prefix = 'data/'
     for file in files:
