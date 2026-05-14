@@ -14,6 +14,7 @@ tabpfn_client
 
 dotenv
 ipynb
+ipynbname
 requests
 
 

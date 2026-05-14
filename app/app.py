@@ -2,57 +2,52 @@ import streamlit as st
 import pandas as pd
 import time
 
-# DATAFRAMES
+# 1.DATAFRAMES
 stock_df = pd.read_csv('data/combined_output.csv')[['date',
-                                                           'close',
-                                                           'high',
-                                                           'low',
-                                                           'open',
-                                                           'previous_day_close',
-                                                           'volume']]\
-    .rename(columns={'close':'Close Price',
-                     'high':'Max Price',
-                     'low':'Min Price',
-                     'open':'Open Price',
-                     'volume':'Trading Volume',
-                     'previous_day_close':'Previous Day Close Price',
-                     'date':'Date'})\
-    .sort_index(ascending=False)
+                                                    'close',
+                                                    'high',
+                                                    'low',
+                                                    'open',
+                                                    'previous_day_close',
+                                                    'volume']].rename(columns={'close':'Close Price',
+                                                                                'high':'Max Price',
+                                                                                'low':'Min Price',
+                                                                                'open':'Open Price',
+                                                                                'volume':'Trading Volume',
+                                                                                'previous_day_close':'Previous Day Close Price',
+                                                                                'date':'Date'}).sort_index(ascending=False)
 
-news_df = pd.read_csv('data/enriched_news_data.csv')[['published_date',
-                                                      'title',
-                                                      'source',
-                                                      'sentiment_label',
-                                                      'sentiment_score',
-                                                      'numerical_sentiment',
-                                                      'is_positive',
-                                                      'is_negative',
-                                                      'is_neutral']]\
-    .rename(columns={'published_date':'Date',
-                     'title':'Title',
-                     'source':'Source',
-                     'sentiment_label':'Sentiment Label',
-                     'sentiment_score':'Sentiment Score',
-                     'numerical_sentiment':'Numerical Sentiment',
-                     'is_positive':'Is Positive',
-                     'is_negative':'Is Negative',
-                     'is_neutral':'Is Neutral'})
+news_df = pd.read_csv('data/sentiment_counts.csv')[['date',
+                                                    'positive_count',
+                                                    'negative_count',
+                                                    'neutral_count',
+                                                    'total_articles']].rename(columns={'date':'Date',
+                                                                                       'positive_count':'Positive Count',
+                                                                                       'negative_count':'Negative Count',
+                                                                                       'neutral_count':'Neutral Count',
+                                                                                       'total_articles':'Total Articles'})
 
 news_df['Month'] = news_df.apply(lambda x: x['Date'][0:7], axis=1)
 
-news_df = news_df.groupby(['Month']).agg({'Is Positive': sum,
-                                          'Is Negative': sum,
-                                          'Is Neutral': sum})
+news_df = news_df.groupby(['Month']).agg({'Positive Count': sum,
+                                          'Negative Count': sum,
+                                          'Neutral Count': sum,
+                                          'Total Articles': sum})
 
-news_df['Percent Positive'] = (news_df['Is Positive'] / (news_df['Is Positive'] + news_df['Is Negative'] + news_df['Is Neutral'])) * 100
-news_df['Percent Negative'] = (news_df['Is Negative'] / (news_df['Is Positive'] + news_df['Is Negative'] + news_df['Is Neutral'])) * 100
-news_df['Percent Neutral'] = (news_df['Is Neutral'] / (news_df['Is Positive'] + news_df['Is Negative'] + news_df['Is Neutral'])) * 100
-news_df = news_df.drop(columns=['Is Positive', 'Is Negative', 'Is Neutral'])
+news_df['Percent Positive'] = (news_df['Positive Count'] / news_df['Total Articles']) * 100
+news_df['Percent Negative'] = (news_df['Negative Count'] / news_df['Total Articles']) * 100
+news_df['Percent Neutral'] = (news_df['Neutral Count'] / news_df['Total Articles']) * 100
 
-# VARIABLES
+news_df = news_df.drop(columns=['Positive Count',
+                                'Negative Count',
+                                'Neutral Count',
+                                'Total Articles'])
+
+
+# 2.VARIABLES
 ticker = 'META'
 
-# TITLE & HEADERS
+
 st.title("Stock Price Prediction")
 st.badge(ticker, color="blue", icon="♾️")
 
