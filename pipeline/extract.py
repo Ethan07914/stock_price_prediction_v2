@@ -38,8 +38,7 @@ class extract:
         return news_data
 
 
-def establish_tiingo_connection(api_token= \
-                                        os.getenv("tiingo_api_token")):
+def establish_tiingo_connection(api_token=os.getenv("tiingo_api_token")):
     '''
     This function configures a connection to the Tiingo API using
     the tiingo Python package.
