@@ -71,7 +71,7 @@ def run_transform_news():
     enriched_news_df.to_csv("data/enriched_news_data.csv", index=False)
 
     # Calculate metrics & output as CSV
-    news_df_with_metrics = calculate_metrics(enriched_news_df)
+    news_df_with_metrics = calculate_metrics(enriched_news_df, True)
     news_df_with_metrics.to_csv('data/news_df_with_metrics.csv', index=False)
 
     return news_df_with_metrics
@@ -103,17 +103,22 @@ def overwrite_files():
         if os.path.exists(prefix+file):
             os.remove(prefix+file)
 
-
-if __name__ == '__main__':
+def main():
     overwrite_files()
-    ticker = 'META'
+    ticker = ("META")
+    article_limit = 1000
+    df = pd.read_csv('data/combined_output.csv')
+    start_date = df['date'].max()
+    end_date = dt.date.today()
 
-    run_extract_news(ticker, dt.date.today() - dt.timedelta(days=50), dt.date.today() - dt.timedelta(days=3), 10)
-    extracted_news_df = pd.read_csv('data/extracted_news_data.csv')
-    start_date = pd.to_datetime(extracted_news_df['publishedDate'], format='mixed').dt.date.min()
-    end_date = pd.to_datetime(extracted_news_df['publishedDate'], format='mixed').dt.date.max()
-    run_extract_stock(ticker, start_date, end_date, None)
+    run_extract_news(ticker, start_date, end_date, article_limit)
+    run_extract_stock(ticker, start_date, end_date,  None)
 
     run_transform_stock()
     run_transform_news()
+
     run_load()
+
+
+if __name__ == '__main__':
+    main()
