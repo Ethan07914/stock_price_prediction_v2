@@ -3,6 +3,8 @@ seaborn
 pandas
 numpy
 streamlit
+fastapi
+fastapi[standard]
 
 tiingo
 

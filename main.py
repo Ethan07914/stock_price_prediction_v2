@@ -119,6 +119,14 @@ def main():
 
     run_load()
 
+def get_next_trading_day():
+    weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+    date = dt.date.today()
+    while date.strftime('%a') not in weekdays:
+        date = date + dt.timedelta(days=1)
+    return date
+
 
 if __name__ == '__main__':
     main()
+
