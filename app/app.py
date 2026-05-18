@@ -47,20 +47,30 @@ st.badge(ticker, color="blue", icon="♾️")
 
 tab1, tab2 = st.tabs(['Analytics', 'Predictions'])
 
+
+
 with tab1:
-    st.subheader("Meta ($META) Daily Performance")
-    st.dataframe(stock_df.style.background_gradient(cmap="RdBu"), hide_index=True)
+        st.subheader("Meta ($META) Daily Performance")
+        st.dataframe(stock_df.style.background_gradient(cmap="RdBu"), hide_index=True)
 
-    st.subheader("Close Price by Date")
+        st.subheader("Close Price by Date")
 
-    st.line_chart(x='Date', y='Close Price',data=stock_df, color='#0668E1')
+        st.line_chart(x='Date', y='Close Price',data=stock_df, color='#0668E1')
 
-    st.subheader("News Article Sentiment")
-    st.dataframe(news_df.style.background_gradient('Blues'), hide_index=True)
-    st.subheader("Sentiment Percentages by Month")
-    st.bar_chart(news_df,
-                 x="Month",
-                 y=["Percent Positive", "Percent Negative", "Percent Neutral"],
-                 color=['Green', 'Red', 'Orange'])
+        st.subheader("News Article Sentiment")
+        st.dataframe(news_df.style.background_gradient('Blues'), hide_index=True)
+        st.subheader("Sentiment Percentages by Month")
+        st.bar_chart(news_df,
+                     x="Month",
+                     y=["Percent Positive", "Percent Negative", "Percent Neutral"],
+                     color=['Green', 'Red', 'Orange'])
+
+with tab2:
+    with st.container(border=True):
+        st.write("### Important Notice")
+        st.write("- The predictions should not be used in isolation to guide decision making.")
+        st.write("- The intention would be to run the predictions in the morning.")
+        st.write("- The model predicts the close price of the stock the same day.")
+
 
 

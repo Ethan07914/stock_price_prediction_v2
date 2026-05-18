@@ -53,3 +53,4 @@ async def get_news_data():
                                     'Total Articles']).reset_index()
 
     return news_df.to_json(orient='records')
+
