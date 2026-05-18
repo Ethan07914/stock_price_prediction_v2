@@ -133,7 +133,6 @@ def get_previous_trading_day():
         date = date - dt.timedelta(days=1)
     return date
 
-
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
 

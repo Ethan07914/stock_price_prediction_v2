@@ -1,6 +1,7 @@
 import fastapi
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 import pandas as pd
+from main import get_previous_trading_day, get_next_trading_day, main
 
 app = FastAPI(
     title='Stock Price Prediction API',
@@ -54,3 +55,27 @@ async def get_news_data():
 
     return news_df.to_json(orient='records')
 
+@app.get('/run_pipeline')
+async def run_pipeline():
+    # Generated with assistance of GEMINI 3, Prompt: What json data should I return from my function
+    try:
+        df = pd.read_csv('data/combined_output.csv')
+        max_date = pd.to_datetime(df['date']).max().date()
+        if max_date < get_previous_trading_day():
+            main()
+            return {"status": "success",
+                    "triggered": True,
+                    "message": "Pipeline completed successfully. Data updated",
+                    "latest_date": str(max_date)}
+        else:
+            return {
+                    "status": "success",
+                    "triggered": False,
+                    "message": "Data is already up to date.",
+                    "latest_date": str(max_date)}
+    except Exception as e:
+        # Don't leave the client hanging if something breaks
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Pipeline failed: {str(e)}"
+        )

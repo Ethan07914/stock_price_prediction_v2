@@ -34,6 +34,19 @@ def load_news_data(URL):
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
+@st.cache_data(ttl=60)
+def trigger_pipeline(URL):
+    try:
+        response = requests.get(URL + "/run_pipeline")
+        if response.status_code == 200:
+            data = response.json()
+            return data
+        else:
+            st.error("Error running pipeline")
+            return None
+    except Exception as e:
+        st.error(f"Could not connect to API: {e}")
+
 stock_df = load_stock_data(URL)
 news_df = load_news_data(URL)
 
@@ -72,5 +85,9 @@ with tab2:
         st.write("- The intention would be to run the predictions in the morning.")
         st.write("- The model predicts the close price of the stock the same day.")
 
+    if st.button("Run Data Pipeline"):
+        data = trigger_pipeline(URL)
+        st.write(f'**{data["message"]}**')
+        st.write(f'**Latest Date: {data["latest_date"]}**')
 
 
