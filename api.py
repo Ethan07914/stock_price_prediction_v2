@@ -63,10 +63,12 @@ async def run_pipeline():
         max_date = pd.to_datetime(df['date']).max().date()
         if max_date < get_previous_trading_day():
             main()
+            updated_df = pd.read_csv('data/combined_output.csv')
+            new_max_date = pd.to_datetime(df['date']).max().date()
             return {"status": "success",
                     "triggered": True,
                     "message": "Pipeline completed successfully. Data updated",
-                    "latest_date": str(max_date)}
+                    "latest_date": str(new_max_date)}
         else:
             return {
                     "status": "success",

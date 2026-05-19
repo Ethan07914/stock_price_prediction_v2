@@ -90,4 +90,8 @@ with tab2:
         st.write(f'**{data["message"]}**')
         st.write(f'**Latest Date: {data["latest_date"]}**')
 
+    if st.button("Run Model (LSTM)"):
+        df = pd.read_csv("data/preds_vs_actual.csv")
+        st.line_chart(x='date', y=['close', 'predicted close'], data=df)
+
 
