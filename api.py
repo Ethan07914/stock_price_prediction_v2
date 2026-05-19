@@ -81,3 +81,17 @@ async def run_pipeline():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Pipeline failed: {str(e)}"
         )
+
+@app.get('/predictions_vs_actual')
+async def get_predictions_vs_actual():
+    try:
+        df = pd.read_csv('data/preds_vs_actual.csv')
+        df = df.rename(columns={'date': 'Date',
+                                'close': 'Close Price',
+                                'predicted close': 'Predicted Close Price'})
+        return df.to_json(orient='records')
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to read data: {str(e)}"
+        )

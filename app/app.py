@@ -47,6 +47,19 @@ def trigger_pipeline(URL):
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
+@st.cache_data(ttl=60)
+def load_predicted_vs_actual_data(URL):
+    try:
+        response = requests.get(URL + "/predictions_vs_actual")
+        if response.status_code == 200:
+            data = response.json()
+            return pd.read_json(data)
+        else:
+            st.error("Error fetching predicted vs actual data")
+            return None
+    except Exception as e:
+        st.error(f"Could not connect to API: {e}")
+
 stock_df = load_stock_data(URL)
 news_df = load_news_data(URL)
 
@@ -85,13 +98,16 @@ with tab2:
         st.write("- The intention would be to run the predictions in the morning.")
         st.write("- The model predicts the close price of the stock the same day.")
 
+    df = load_predicted_vs_actual_data(URL)
+    st.subheader("Predicted Close Price vs Actual Close Price")
+    st.line_chart(x='Date', y=['Close Price', 'Predicted Close Price'], data=df)
+
     if st.button("Run Data Pipeline"):
         data = trigger_pipeline(URL)
         st.write(f'**{data["message"]}**')
         st.write(f'**Latest Date: {data["latest_date"]}**')
 
-    if st.button("Run Model (LSTM)"):
-        df = pd.read_csv("data/preds_vs_actual.csv")
-        st.line_chart(x='date', y=['close', 'predicted close'], data=df)
+
+
 
 
