@@ -73,8 +73,6 @@ st.badge(ticker, color="blue", icon="♾️")
 
 tab1, tab2 = st.tabs(['Analytics', 'Predictions'])
 
-
-
 with tab1:
         st.subheader("Meta ($META) Daily Performance")
         st.dataframe(stock_df.style.background_gradient(cmap="RdBu"), hide_index=True)
