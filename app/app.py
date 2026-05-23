@@ -60,6 +60,19 @@ def load_predicted_vs_actual_data(URL):
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
+@st.cache_data(ttl=60)
+def retrieve_predictions(URL):
+    try:
+        response = requests.get(URL + "/predictions")
+        if response.status_code == 200:
+            data = response.json()
+            return data
+        else:
+            st.error("Error fetching predictions")
+            return None
+    except Exception as e:
+        st.error(f"Could not connect to API: {e}")
+
 stock_df = load_stock_data(URL)
 news_df = load_news_data(URL)
 
@@ -100,10 +113,20 @@ with tab2:
     st.subheader("Predicted Close Price vs Actual Close Price")
     st.line_chart(x='Date', y=['Close Price', 'Predicted Close Price'], data=df)
 
+    # Generated with assistance of GEMINI 3.1 FLASH
+    # Initially second button would never cause the function to be executed
+    if "pipeline_executed" not in st.session_state:
+        st.session_state["pipeline_executed"] = False
+
     if st.button("Run Data Pipeline"):
+        st.session_state["pipeline_executed"] = True
         data = trigger_pipeline(URL)
         st.write(f'**{data["message"]}**')
         st.write(f'**Latest Date: {data["latest_date"]}**')
+
+    if st.session_state['pipeline_executed']:
+        if st.button("Predict"):
+            st.write(retrieve_predictions(URL))
 
 
 

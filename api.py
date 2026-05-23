@@ -2,6 +2,8 @@ import fastapi
 from fastapi import FastAPI, HTTPException, status
 import pandas as pd
 from main import get_previous_trading_day, get_next_trading_day, main
+from nn import run_nn
+import json
 
 app = FastAPI(
     title='Stock Price Prediction API',
@@ -94,4 +96,15 @@ async def get_predictions_vs_actual():
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to read data: {str(e)}"
+        )
+
+@app.get('/predictions')
+async def get_predictions():
+    try:
+        data = run_nn()
+        return json.dumps(data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to run the Neural Network: {str(e)}"
         )

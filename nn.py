@@ -27,7 +27,8 @@ def run_nn():
 
     train_rmse, test_rmse = get_rmse(train_actual, train_output_prediction, test_actual, test_output_prediction)
 
-    return train_rmse, test_rmse
+    return {"Train RMSE": train_rmse}
 
 
-print(run_nn())
+if __name__ == "__main__":
+    run_nn()
