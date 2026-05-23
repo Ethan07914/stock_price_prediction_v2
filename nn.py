@@ -63,7 +63,7 @@ def run_nn():
 
     return {"Train RMSE": train_rmse,
             'Prediction': float(pred_value[0][0]),
-            'Next Trading Date': next_trading_day}
+            'Next Trading Date': str(next_trading_day)}
 
 
 if __name__ == "__main__":

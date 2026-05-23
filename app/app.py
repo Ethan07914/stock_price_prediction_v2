@@ -60,7 +60,7 @@ def load_predicted_vs_actual_data(URL):
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
-@st.cache_data(ttl=60)
+#@st.cache_data(ttl=60)
 def retrieve_predictions(URL):
     try:
         response = requests.get(URL + "/predictions")
@@ -126,7 +126,9 @@ with tab2:
 
     if st.session_state['pipeline_executed']:
         if st.button("Predict"):
-            st.write(retrieve_predictions(URL))
+            prediction_data = retrieve_predictions(URL)
+            st.header(prediction_data['Next Trading Date'])
+            st.metric("Predicted Close Price", round(prediction_data['Prediction'], 2))
 
 
 
