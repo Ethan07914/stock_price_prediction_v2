@@ -11,7 +11,7 @@ def run_nn():
 
     device = get_device()
 
-    X_train_df_as_numpy, X_test_df_as_numpy, Y_train_df_as_numpy, Y_test_df_as_numpy, scalar_x, scalar_y = scale_data(df)
+    X_train_df_as_numpy, X_test_df_as_numpy, Y_train_df_as_numpy, Y_test_df_as_numpy, scalar_x, scalar_y = scale_data(df, 1)
     X_train, X_test, Y_train, Y_test = split_data(X_train_df_as_numpy, X_test_df_as_numpy, Y_train_df_as_numpy,
                                                   Y_test_df_as_numpy)
     X_train, X_test, Y_train, Y_test = convert_to_tensors(X_train, X_test, Y_train, Y_test)
