@@ -4,8 +4,6 @@ pandas
 polars
 numpy
 streamlit
-fastapi
-fastapi[standard]
 
 tiingo
 

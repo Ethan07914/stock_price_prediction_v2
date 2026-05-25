@@ -3,80 +3,58 @@ import pandas as pd
 import time
 import json
 import requests
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from api import (get_stock_data, get_news_data, get_predictions,
+                                        get_predictions_vs_actual, run_pipeline)
 
-URL = "https://stockpriceprediction-77xj5kzyytrrfjc9byuefu.streamlit.app"
 
 
 # 1.DATAFRAMES
 @st.cache_data(ttl=60)
-def load_stock_data(URL):
+def load_stock_data():
     # Written with assistance of GEMINI 3, PROMPT: How do I call my API in my streamlit front end
     try:
-        response = requests.get(URL+"/stock_data")
-        if response.status_code == 200:
-            data = response.json()
-            return pd.DataFrame(data)
-        else:
-            st.error("Error fetching stock data")
-            return None
+        data = get_stock_data()
+        return pd.DataFrame(data)
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
 @st.cache_data(ttl=60)
-def load_news_data(URL):
+def load_news_data():
     # Written with assistance of GEMINI 3, PROMPT: How do I call my API in my streamlit front end
     try:
-        response = requests.get(URL+"/news_data")
-        if response.status_code == 200:
-            data = response.json()
-            return pd.DataFrame(data)
-        else:
-            st.error("Error fetching news data")
-            return None
+        data = get_news_data()
+        return pd.DataFrame(data)
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
 @st.cache_data(ttl=60)
-def trigger_pipeline(URL):
+def trigger_pipeline():
     try:
-        response = requests.get(URL + "/run_pipeline")
-        if response.status_code == 200:
-            data = response.json()
-            return data
-        else:
-            st.error("Error running pipeline")
-            return None
+        data = run_pipeline()
+        return data
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
 @st.cache_data(ttl=60)
-def load_predicted_vs_actual_data(URL):
+def load_predicted_vs_actual_data():
     try:
-        response = requests.get(URL + "/predictions_vs_actual")
-        if response.status_code == 200:
-            data = response.json()
-            return pd.DataFrame(data)
-        else:
-            st.error("Error fetching predicted vs actual data")
-            return None
+        data = get_predictions_vs_actual()
+        return pd.DataFrame(data)
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
-#@st.cache_data(ttl=60)
-def retrieve_predictions(URL):
+@st.cache_data(ttl=60)
+def retrieve_predictions():
     try:
-        response = requests.get(URL + "/predictions")
-        if response.status_code == 200:
-            data = response.json()
-            return data
-        else:
-            st.error("Error fetching predictions")
-            return None
+        data = get_predictions()
+        return data
     except Exception as e:
         st.error(f"Could not connect to API: {e}")
 
-stock_df = load_stock_data(URL)
-news_df = load_news_data(URL)
+stock_df = load_stock_data()
+news_df = load_news_data()
 
 
 # 2.VARIABLES
@@ -111,7 +89,7 @@ with tab2:
         st.write("- The intention would be to run the predictions in the morning.")
         st.write("- The model predicts the close price of the stock the same day.")
 
-    df = load_predicted_vs_actual_data(URL)
+    df = load_predicted_vs_actual_data()
     st.subheader("Predicted Close Price vs Actual Close Price")
     st.line_chart(x='Date', y=['Close Price', 'Predicted Close Price'], data=df)
 
@@ -122,13 +100,13 @@ with tab2:
 
     if st.button("Run Data Pipeline"):
         st.session_state["pipeline_executed"] = True
-        data = trigger_pipeline(URL)
+        data = trigger_pipeline()
         st.write(f'**{data["message"]}**')
         st.write(f'**Latest Date: {data["latest_date"]}**')
 
     if st.session_state['pipeline_executed']:
         if st.button("Predict"):
-            prediction_data = retrieve_predictions(URL)
+            prediction_data = retrieve_predictions()
             st.header(prediction_data['Next Trading Date'])
             st.metric("Predicted Close Price", round(prediction_data['Prediction'], 2))
 
