@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from datetime import timedelta
 import datetime as dt
 import os
+import streamlit as st
 
 
 load_dotenv()
@@ -38,13 +39,18 @@ class extract:
         return news_data
 
 
-def establish_tiingo_connection(api_token=os.getenv("tiingo_api_token")):
+def establish_tiingo_connection():
     '''
     This function configures a connection to the Tiingo API using
     the tiingo Python package.
 
     source: (Cameron Yick, https://pypi.org/project/tiingo/)
     '''
+    tiingo_api_variable_name = "tiingo_api_token"
+    try:
+        api_token = os.getenv(tiingo_api_variable_name)
+    except Exception as e:
+        api_token = st.secrets[tiingo_api_variable_name]
 
     # Setup authorization dictionary
     config = {}
