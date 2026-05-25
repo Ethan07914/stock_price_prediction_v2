@@ -55,6 +55,7 @@ I trained my own LSTM to predict stock prices from both stock market and related
 ## Deployment Notes
 
 - Models will be runnable on most desktops and laptops without the need for using virtual machines.
+- Front-end deployed on Streamlit Community Cloud https://stockpriceprediction-77xj5kzyytrrfjc9byuefu.streamlit.app/
 
 # References
 

@@ -3,7 +3,7 @@ import pandas as pd
 import time
 import requests
 
-URL = "http://127.0.0.1:8000"
+URL = "https://stock-price-prediction-wlor.onrender.com"
 
 # 1.DATAFRAMES
 @st.cache_data(ttl=60)

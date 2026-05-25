@@ -32,7 +32,7 @@ hugging_face_token=<insert token>
 
 ## Results
 
--![img.png](img.png) 
+![img_1.png](img_1.png)
 - **{'train_rmse': 11.275712966918945, 'test_rmse': 15.504542350769043}**
 
 ## Limitations And Known Issues
