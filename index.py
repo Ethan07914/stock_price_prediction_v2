@@ -1,5 +1,5 @@
 # Please see (Commit 5961f05, ref: replaced pandas usage to polars for memory efficiency, https://github.com/Ethan07914/stock_price_prediction) for the changes made by claude code
-# Prompt: "@api.py can you replace usage of pandas for polars utilising polars memory efficiency.
+# Prompt: "@index.py can you replace usage of pandas for polars utilising polars memory efficiency.
 #          Can you also make a note of this prompt as a comment, your model details and the change you made in a brief comment."
 # Model: claude-sonnet-4-6
 # Change: Replaced all pandas (pd) usage with polars (pl) throughout. Migrated read_csv, rename,
