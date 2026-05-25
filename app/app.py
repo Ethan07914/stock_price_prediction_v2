@@ -4,7 +4,7 @@ import time
 import json
 import requests
 
-URL = "https://stock-price-prediction-wlor.onrender.com"
+URL = "https://stockpriceprediction-77xj5kzyytrrfjc9byuefu.streamlit.app"
 
 
 # 1.DATAFRAMES
