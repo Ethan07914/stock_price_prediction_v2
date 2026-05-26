@@ -47,6 +47,7 @@ I trained my own LSTM to predict stock prices from both stock market and related
 # Ethics & risks
 
 - The model predicting the close price of the META stock significantly wrong could contribute to a loss of money for a user.
+- People taking the predictions as absolute truth.
 
 ## Mitigations
 

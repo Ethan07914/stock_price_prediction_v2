@@ -4,25 +4,30 @@
 
 In this project I used numerical data such as stock prices and trading volume alongside relevant news articles in attempt to accurately predict stock prices. This will assist individual investors in making trading decisions by providing them with insight and predictions of the current stock market. With my solution people are less likely to time the market wrong resulting in a reduced return. In this project I wanted to look at news article sentiment as well as pricing data as news articles can help predict trading behaviour.
 
+## Deployment Link
+
+The application is deployed on streamlit community cloud https://stockpriceprediction-77xj5kzyytrrfjc9byuefu.streamlit.app/. It also uses a cron job on GitHub via GitHub actions to refresh the data daily. If something where to go wrong with the deployment please see the attached video stock_price_prediction_demo.mp4.
+
 ## Intended Users
 
 Anyone interested in the stock market and investments with awareness of the potential risks.
 
 ## Success Metrics
 
-To measure the success I took an average of how close my models predicted close prices were to the actual close prices of a stock on a particular day. The exact metric I used was RMSE (root mean squared error). RMSE squares the differences before averaging them and calculating the square root.
+To measure the success I took an average of how close my models predicted close prices were to the actual close prices of a stock on a particular day. The exact metric I used was RMSE (root mean squared error). RMSE squares the differences before averaging them and calculating the square root. Compared to other models like those featured in the references I also combine news data which is added complexity in the hope of enhancing predictions.
 
 ## How To Run
 
 - The best way to view the project would be from the front end which is hosted on streamlit community cloud
 - To run the individual notebooks that store the code for my models models/neural_network.ipynb, models/sentiment_model.ipynb ensure that you have installed all requirements and have a Hugging Face API Key in a .env file
+- I don't recommend running the data pipeline functions as they require a paid api key, just run the models in the model sub-directory.
 
 ```Bash
 pip install -r requirements.txt
 ```
 
 ```env
-# Setup a .env file with the following in the base directory
+# Setup a file named .env with the following in the base directory
 hugging_face_token=<insert token>
 ```
 
@@ -34,6 +39,7 @@ hugging_face_token=<insert token>
 
 ![img_1.png](img_1.png)
 - **{'train_rmse': 11.275712966918945, 'test_rmse': 15.504542350769043}**
+- Here you can see my model began to overfit as the train error was smaller than the test error.
 
 ## Limitations And Known Issues
 
@@ -47,6 +53,7 @@ hugging_face_token=<insert token>
 - Do not use the model as the only source determining trading decisions.
 - Do not use the model to inform trades with money you are not prepared to lose.
 - If your interested in using the model to inform trades don't start with actual money instead paper trade.
+- Another risk is people taking the predictions as absolute truth and being disappointed when they are incorrect.
 
 ## References / Acknowledgements
 
