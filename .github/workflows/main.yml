@@ -34,6 +34,12 @@ jobs:
         pip install -r requirements.txt
         pip install jupyter nbconvert  # Required to execute the .ipynb file
 
+    # Temporary .env file
+    - name: Create .env file
+      run: |
+        echo "tiingo_api_token=${{ tiingo_api_token }}" >> .env
+        echo "hugging_face_token=${{ secrets.hugging_face_token }}" >> .env
+
     # 4. Run the main.py file
     - name: Run main.py
       run: python main.py
@@ -51,7 +57,7 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         
         # Stage only modified or new CSV files
-        git add .  # Adjust paths if your CSVs are in specific folders
+        git add data/*.csv models/*.ipynb  # Adjust paths if your CSVs are in specific folders
         
         # Check if there are actually any changes to commit so the workflow doesn't fail
         if git diff --staged --quiet; then
