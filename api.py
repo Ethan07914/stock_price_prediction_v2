@@ -20,6 +20,7 @@ def get_stock_data():
                                                                                    'previous_day_close': 'Previous Day Close Price',
                                                                                    'date': 'Date'}).sort_index(
         ascending=False)
+    # Sort index sorts the data in date order most recent first
     return stock_df.to_json(orient='records')
 
 def get_news_data():
@@ -32,9 +33,10 @@ def get_news_data():
                                                                                            'negative_count': 'Negative Count',
                                                                                            'neutral_count': 'Neutral Count',
                                                                                            'total_articles': 'Total Articles'})
-
+    # Takes first 7 characters in the date column of each row and saves to new column Month
     news_df['Month'] = news_df.apply(lambda x: x['Date'][0:7], axis=1)
 
+    # Aggregation of data
     news_df = news_df.groupby(['Month']).agg({'Positive Count': sum,
                                               'Negative Count': sum,
                                               'Neutral Count': sum,

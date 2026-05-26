@@ -122,6 +122,7 @@ def main():
 def get_next_trading_day():
     weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
     date = dt.date.today()
+    # Loop until day is a weekday as markets close on weekends
     while date.strftime('%a') not in weekdays:
         date = date + dt.timedelta(days=1)
     return date

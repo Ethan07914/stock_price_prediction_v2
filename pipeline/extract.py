@@ -66,5 +66,3 @@ def establish_tiingo_connection():
 
 
 
-
-

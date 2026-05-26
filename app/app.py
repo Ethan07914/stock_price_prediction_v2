@@ -1,30 +1,27 @@
 import streamlit as st
 import pandas as pd
-import time
-import json
-import requests
 import json
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from api import (get_stock_data, get_news_data, get_predictions,
                                         get_predictions_vs_actual, run_pipeline)
-import io
+
 
 
 
 # 1.DATAFRAMES
 @st.cache_data(ttl=60)
 def load_stock_data():
-    # Written with assistance of GEMINI 3, PROMPT: How do I call my API in my streamlit front end
     try:
+        # Request JSON data from API
         data = json.loads(get_stock_data())
         return pd.DataFrame(data)
     except Exception as e:
+        # Handle the case of invalid response
         st.error(f"Could not connect to API: {e}")
 
 @st.cache_data(ttl=60)
 def load_news_data():
-    # Written with assistance of GEMINI 3, PROMPT: How do I call my API in my streamlit front end
     try:
         data = json.loads(get_news_data())
         return pd.DataFrame(data)
